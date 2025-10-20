@@ -1,16 +1,21 @@
 //AGREGANDO CLASE NAVE EN GENERAL para que las otras naves puedan entender PROPULSAR
 class Nave {
-  var property velocidad
-  const velocidadMaxima = 300000 
-  method recibirAmenaza() //preguntar si esta bien dejarlo asi
+  var property velocidad 
+  //const velocidadMaxima = 300000 
+  method recibirAmenaza() //preguntar si esta bien dejarlo asi => esta bioen!
   
   method propulsar() {
-	if(velocidad + 20000 < velocidadMaxima){ // lo puedo hacer como una validacion, preguntar
+		velocidad = 300000.min(velocidad + 20000) //mas claro
+	/*f(velocidad + 20000 < velocidadMaxima){ // lo puedo hacer como una validacion, preguntar
 		velocidad = velocidad + 20000
 	} else {
 		velocidad = velocidadMaxima
-	}
+	}*/
   }
+	method prepararseParaViajar(){
+		velocidad = 300000.min(velocidad + 15000)
+	}
+  // velocidad = 300000.min(velocidad + 20000)
 }
 
 class NaveDeCarga inherits Nave{
@@ -28,6 +33,21 @@ class NaveDeCarga inherits Nave{
 
 }
 
+class NaveDeCargaConResiduosRadiactivos inherits NaveDeCarga{
+	var sellado = false
+
+	method sellarAlVacio() {
+	  sellado = true
+	}
+	method sellado() = sellado
+
+	override method recibirAmenaza() {
+	  	velocidad = 0 //ffrenar
+	} 
+	override method prepararseParaViajar(){
+		self.sellarAlVacio()
+	}
+}
 class NaveDePasajeros inherits Nave{
 
 	//var velocidad = 0
@@ -63,15 +83,20 @@ class NaveDeCombate inherits Nave{
 	override method recibirAmenaza() {
 		modo.recibirAmenaza(self)
 	}
+	override method prepararseParaViajar(){
 
+		modo.prepararseParaViajar(self)
+	}
 }
-
 object reposo {
 
 	method invisible() = false
 
 	method recibirAmenaza(nave) {
 		nave.emitirMensaje("¡RETIRADA!")
+	}
+	method prepararseParaViajar(nave){
+		nave.emitirMensaje("Volvimos a la Base°")
 	}
 
 }
@@ -83,5 +108,8 @@ object ataque {
 	method recibirAmenaza(nave) {
 		nave.emitirMensaje("Enemigo encontrado")
 	}
-
+	method prepararseParaViajar(nave){
+		nave.emitirMensaje("Volvimos a la Base°")
+	}
 }
+
