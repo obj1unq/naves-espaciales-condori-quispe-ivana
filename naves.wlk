@@ -1,38 +1,54 @@
-class NaveDeCarga {
+//AGREGANDO CLASE NAVE EN GENERAL para que las otras naves puedan entender PROPULSAR
+class Nave {
+  var property velocidad
+  const velocidadMaxima = 300000 
+  method recibirAmenaza() //preguntar si esta bien dejarlo asi
+  
+  method propulsar() {
+	if(velocidad + 20000 < velocidadMaxima){ // lo puedo hacer como una validacion, preguntar
+		velocidad = velocidad + 20000
+	} else {
+		velocidad = velocidadMaxima
+	}
+  }
+}
 
-	var velocidad = 0
+class NaveDeCarga inherits Nave{
+
+	//var velocidad = 0
 	var property carga = 0
 
 	method sobrecargada() = carga > 100000
 
 	method excedidaDeVelocidad() = velocidad > 100000
 
-	method recibirAmenaza() {
+	override method recibirAmenaza() {
 		carga = 0
 	}
 
 }
 
-class NaveDePasajeros {
+class NaveDePasajeros inherits Nave{
 
-	var velocidad = 0
+	//var velocidad = 0
 	var property alarma = false
 	const cantidadDePasajeros = 0
 
 	method tripulacion() = cantidadDePasajeros + 4
 
+	//preguntar por este metodo
 	method velocidadMaximaLegal() = 300000 / self.tripulacion() - if (cantidadDePasajeros > 100) 200 else 0
 
 	method estaEnPeligro() = velocidad > self.velocidadMaximaLegal() or alarma
 
-	method recibirAmenaza() {
+	override method recibirAmenaza() {
 		alarma = true
 	}
 
 }
 
-class NaveDeCombate {
-	var property velocidad = 0
+class NaveDeCombate inherits Nave{
+	//var property velocidad = 0
 	var property modo = reposo
 	const property mensajesEmitidos = []
 
@@ -44,7 +60,7 @@ class NaveDeCombate {
 
 	method estaInvisible() = velocidad < 10000 and modo.invisible()
 
-	method recibirAmenaza() {
+	override method recibirAmenaza() {
 		modo.recibirAmenaza(self)
 	}
 

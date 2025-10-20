@@ -2,7 +2,7 @@ import naves.*
 
 describe "Nave de carga" {
 
-	const naveVacia = new NaveDeCarga()
+	const naveVacia = new NaveDeCarga(velocidad = 0)
 	const naveLlena = new NaveDeCarga(carga = 500000, velocidad = 290000)
 
 	test "sobrecargada" {
@@ -26,11 +26,21 @@ describe "Nave de carga" {
 		assert.equals(0, naveVacia.carga())
 	}
 
+	test "propulsar nave" {
+	  assert.equals(0, naveVacia.velocidad())
+	  naveVacia.propulsar()
+	  assert.equals(20000, naveVacia.velocidad())
+
+	  assert.equals(290000, naveLlena.velocidad())
+	  naveLlena.propulsar()
+	  assert.equals(300000, naveLlena.velocidad())
+	}
+
 }
 
 describe "Nave de pasajeros" {
 
-	const naveSinPasajeros = new NaveDePasajeros()
+	const naveSinPasajeros = new NaveDePasajeros(velocidad = 0)
 	const naveConPasajeros = new NaveDePasajeros(cantidadDePasajeros = 296, velocidad = 290000)
 
 	test "velocidad maxima sin pasajeros" {
@@ -54,12 +64,22 @@ describe "Nave de pasajeros" {
 		assert.that(naveSinPasajeros.alarma())
 	}
 
+	test "propulsar nave" {
+	  assert.equals(0, naveSinPasajeros.velocidad())
+	  naveSinPasajeros.propulsar()
+	  assert.equals(20000, naveSinPasajeros.velocidad())
+
+	  assert.equals(290000, naveConPasajeros.velocidad())
+	  naveConPasajeros.propulsar()
+	  assert.equals(300000, naveConPasajeros.velocidad())
+	}
+
 }
 
 describe "Nave de combate" {
 
-	const naveEnReposo = new NaveDeCombate()
-	const naveEnAtaque = new NaveDeCombate(modo = ataque)
+	const naveEnReposo = new NaveDeCombate(velocidad = 0)
+	const naveEnAtaque = new NaveDeCombate(velocidad = 0, modo = ataque)
 
 	test "no esta invisible en reposo" {
 		assert.notThat(naveEnReposo.estaInvisible())
@@ -82,5 +102,14 @@ describe "Nave de combate" {
 	test "recibir amenaza en ataque" {
 		naveEnAtaque.recibirAmenaza()
 		assert.equals("Enemigo encontrado", naveEnAtaque.ultimoMensaje())
+	}
+	test "propulsar nave" {
+	  assert.equals(0, naveEnReposo.velocidad())
+	  naveEnReposo.propulsar()
+	  assert.equals(20000, naveEnReposo.velocidad())
+
+	  assert.equals(0, naveEnAtaque.velocidad())
+	  naveEnAtaque.propulsar()
+	  assert.equals(20000, naveEnAtaque.velocidad())
 	}
 }
