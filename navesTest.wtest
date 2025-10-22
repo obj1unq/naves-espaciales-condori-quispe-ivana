@@ -80,6 +80,12 @@ describe "Nave de pasajeros" {
 		naveConPasajeros.prepararseParaViajar()
 		assert.equals(300000, naveConPasajeros.velocidad())
 	}
+	test "Nave se encuentra con enemigo" {
+	  naveSinPasajeros.hayEnemigo()
+
+	  assert.equals(20000, naveSinPasajeros.velocidad())
+	  assert.that(naveSinPasajeros.alarma())
+	}
 }
 
 
@@ -121,6 +127,10 @@ describe "Nave de combate" {
 	  assert.equals(20000, naveEnAtaque.velocidad())
 	}
 	test "Prepararse para viajar"{
+		naveEnAtaque.prepararseParaViajar()
+
+		assert.equals(15000, naveEnAtaque.velocidad())
+		assert.equals("Volvimos a la Base", naveEnAtaque.ultimoMensaje())
 
 	}
 }
@@ -143,7 +153,13 @@ describe "Nave de carga con residuos radioctivos" {
 	assert.equals(0, naveCargada.velocidad())
   }
   test "Preparase para el viaje" {
-	naveSin
+	assert.equals(0, naveSinCargar.velocidad())
+	assert.notThat(naveSinCargar.sellado())
+
+	naveSinCargar.prepararseParaViajar()
+
+	assert.equals(15000, naveSinCargar.velocidad())
+	assert.that(naveSinCargar.sellado())
   }
 
 }
